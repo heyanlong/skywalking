@@ -170,6 +170,11 @@ public class AlarmQuery implements GraphQLQueryResolver {
                 final IDManager.EndpointID.EndpointIDDefinition endpointIDDef = IDManager.EndpointID.analysisId(msg.getId());
                 final String endpointServiceName = IDManager.ServiceID.analysisId(endpointIDDef.getServiceId()).getName();
                 sources.add(sourcePrototype.service(endpointServiceName).build());
+            case DefaultScopeDefine.BLOCK:
+                final IDManager.BlockID.BlockIDDefinition blockIDDef = IDManager.BlockID.analysisId(msg.getId());
+                sources.add(sourcePrototype.service(blockIDDef.getServiceName())
+                                      .serviceInstance(blockIDDef.getServiceInstanceName())
+                                      .build());
                 break;
         }
 

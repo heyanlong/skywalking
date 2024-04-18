@@ -328,6 +328,39 @@ public class IDManager {
         }
     }
 
+    public static class BlockID {
+        public static String buildId(String serviceName, String serviceInstanceName, String peer) {
+            return encode(serviceName) + Const.SERVICE_ID_CONNECTOR + BooleanUtils.booleanToValue(true)
+                    + Const.ID_CONNECTOR + encode(serviceInstanceName) + Const.ID_CONNECTOR + encode(peer);
+        }
+
+        public static BlockIDDefinition analysisId(String id) {
+            final String[] strings = id.split(Const.ID_PARSER_SPLIT);
+            if (strings.length != 3) {
+                throw new UnexpectedException("Can't split block id into 3 parts, " + id);
+            }
+
+            final String[] serviceIdParts = strings[0].split(Const.SERVICE_ID_PARSER_SPLIT);
+            if (serviceIdParts.length != 2) {
+                throw new UnexpectedException("Can't split service id into 2 parts, " + strings[0]);
+            }
+
+            return new BlockIDDefinition(
+                decode(serviceIdParts[0]),
+                decode(strings[1]),
+                decode(strings[2])
+            );
+        }
+
+        @RequiredArgsConstructor
+        @Getter
+        public static class BlockIDDefinition {
+            private final String serviceName;
+            private final String serviceInstanceName;
+            private final String peer;
+        }
+    }
+
     /**
      * @param text normal literal string
      * @return Base64 encoded UTF-8 string

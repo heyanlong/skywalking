@@ -127,6 +127,8 @@ public class DefaultScopeDefine {
 
     public static final int UI_MENU = 69;
 
+    public static final int BLOCK = 70;
+
     /**
      * Catalog of scope, the metrics processor could use this to group all generated metrics by oal rt.
      */
@@ -138,6 +140,7 @@ public class DefaultScopeDefine {
     public static final String ENDPOINT_RELATION_CATALOG_NAME = "ENDPOINT_RELATION";
     public static final String PROCESS_CATALOG_NAME = "PROCESS";
     public static final String PROCESS_RELATION_CATALOG_NAME = "PROCESS_RELATION";
+    public static final String BLOCK_CATALOG_NAME = "BLOCK";
 
     private static final Map<Integer, Boolean> SERVICE_CATALOG = new HashMap<>();
     private static final Map<Integer, Boolean> SERVICE_INSTANCE_CATALOG = new HashMap<>();
@@ -147,6 +150,7 @@ public class DefaultScopeDefine {
     private static final Map<Integer, Boolean> ENDPOINT_RELATION_CATALOG = new HashMap<>();
     private static final Map<Integer, Boolean> PROCESS_CATALOG = new HashMap<>();
     private static final Map<Integer, Boolean> PROCESS_RELATION_CATALOG = new HashMap<>();
+    private static final Map<Integer, Boolean> BLOCK_CATALOG = new HashMap<>();
 
     @Setter
     private static boolean ACTIVE_EXTRA_MODEL_COLUMNS = false;
@@ -253,6 +257,9 @@ public class DefaultScopeDefine {
                 break;
             case PROCESS_RELATION_CATALOG_NAME:
                 PROCESS_RELATION_CATALOG.put(id, Boolean.TRUE);
+                break;
+            case BLOCK_CATALOG_NAME:
+                BLOCK_CATALOG.put(id, Boolean.TRUE);
                 break;
         }
     }
@@ -375,6 +382,16 @@ public class DefaultScopeDefine {
     }
 
     /**
+     * Check whether the given scope ID belongs block catalog
+     *
+     * @param scopeId represents an existing scope id.
+     * @return true is current scope set {@link ScopeDeclaration#catalog()} == {@link #BLOCK_CATALOG_NAME}
+     */
+    public static boolean inBlockCatalog(int scopeId) {
+        return BLOCK_CATALOG.containsKey(scopeId);
+    }
+
+    /**
      * Get the catalog string name of the given scope
      *
      * @param scope id of the source scope.
@@ -404,6 +421,9 @@ public class DefaultScopeDefine {
         }
         if (inProcessRelationCatalog(scope)) {
             return PROCESS_RELATION_CATALOG_NAME;
+        }
+        if (inBlockCatalog(scope)) {
+            return BLOCK_CATALOG_NAME;
         }
         return "ALL";
     }

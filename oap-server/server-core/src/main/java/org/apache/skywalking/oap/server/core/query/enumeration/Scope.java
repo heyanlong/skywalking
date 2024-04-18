@@ -29,6 +29,7 @@ import static org.apache.skywalking.oap.server.core.source.DefaultScopeDefine.in
 import static org.apache.skywalking.oap.server.core.source.DefaultScopeDefine.inServiceInstanceCatalog;
 import static org.apache.skywalking.oap.server.core.source.DefaultScopeDefine.inServiceInstanceRelationCatalog;
 import static org.apache.skywalking.oap.server.core.source.DefaultScopeDefine.inServiceRelationCatalog;
+import static org.apache.skywalking.oap.server.core.source.DefaultScopeDefine.inBlockCatalog;
 
 /**
  * Scope in query stage represents the scope catalog. All scopes with their catalogs are defined in
@@ -49,7 +50,8 @@ public enum Scope {
     ServiceInstanceRelation(DefaultScopeDefine.SERVICE_INSTANCE_RELATION),
     EndpointRelation(DefaultScopeDefine.ENDPOINT_RELATION),
     Process(DefaultScopeDefine.PROCESS),
-    ProcessRelation(DefaultScopeDefine.PROCESS_RELATION);
+    ProcessRelation(DefaultScopeDefine.PROCESS_RELATION),
+    Block(DefaultScopeDefine.BLOCK);
 
     /**
      * Scope ID is defined in {@link DefaultScopeDefine}.
@@ -86,6 +88,9 @@ public enum Scope {
             }
             if (inProcessRelationCatalog(scopeId)) {
                 return ProcessRelation;
+            }
+            if (inBlockCatalog(scopeId)) {
+                return Block;
             }
             return All;
         }

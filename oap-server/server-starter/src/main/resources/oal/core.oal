@@ -96,3 +96,6 @@ mq_endpoint_consume_percentile = from(MQEndpointAccess.transmissionLatency).filt
 mq_endpoint_consume_sla = from(MQEndpointAccess.*).filter(operation == MQOperation.Consume).percent(status == true);
 mq_endpoint_produce_cpm = from(MQEndpointAccess.*).filter(operation == MQOperation.Produce).cpm();
 mq_endpoint_produce_sla = from(MQEndpointAccess.*).filter(operation == MQOperation.Produce).percent(status == true);
+
+// block
+block_sum = from(Block.peer).count();

@@ -24,6 +24,7 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.skywalking.oap.server.core.alarm.AlarmCallback;
 import org.apache.skywalking.oap.server.core.alarm.EndpointRelationMetaInAlarm;
+import org.apache.skywalking.oap.server.core.alarm.BlockMetaInAlarm;
 import org.apache.skywalking.oap.server.core.alarm.ServiceInstanceRelationMetaInAlarm;
 import org.apache.skywalking.oap.server.core.alarm.ServiceRelationMetaInAlarm;
 import org.apache.skywalking.oap.server.core.alarm.EndpointMetaInAlarm;
@@ -67,7 +68,8 @@ public class NotifyHandler implements MetricsNotify {
 
         if (!DefaultScopeDefine.inServiceCatalog(scope) && !DefaultScopeDefine.inServiceInstanceCatalog(scope)
             && !DefaultScopeDefine.inEndpointCatalog(scope) && !DefaultScopeDefine.inServiceRelationCatalog(scope)
-            && !DefaultScopeDefine.inServiceInstanceRelationCatalog(scope) && !DefaultScopeDefine.inEndpointRelationCatalog(scope)) {
+            && !DefaultScopeDefine.inServiceInstanceRelationCatalog(scope) && !DefaultScopeDefine.inEndpointRelationCatalog(scope)
+            && !DefaultScopeDefine.inBlockCatalog(scope)) {
             return;
         }
 
@@ -153,6 +155,16 @@ public class NotifyHandler implements MetricsNotify {
             endpointRelationMetaInAlarm.setName(endpointRelationDefine.getSource() + " in " + sourceService.getName()
                 + " to " + endpointRelationDefine.getDest() + " in " + destService.getName());
             metaInAlarm = endpointRelationMetaInAlarm;
+        } else if (DefaultScopeDefine.inBlockCatalog(scope)) {
+            final String blockId = meta.getId();
+            final IDManager.BlockID.BlockIDDefinition blockIDDefinition = IDManager.BlockID.analysisId(blockId);
+
+            BlockMetaInAlarm blockMetaInAlarm = new BlockMetaInAlarm();
+            blockMetaInAlarm.setMetricsName(meta.getMetricsName());
+            blockMetaInAlarm.setId(blockId);
+            blockMetaInAlarm.setName(blockIDDefinition.getServiceInstanceName() + " of " + blockIDDefinition.getServiceName()
+                + " to " + blockIDDefinition.getPeer());
+            metaInAlarm = blockMetaInAlarm;
         } else {
             return;
         }

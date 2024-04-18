@@ -75,6 +75,8 @@ public class MetricFormatter {
                 endpointRelationDefine.getDestServiceId());
             return endpointRelationDefine.getSource() + " in " + sourceService.getName()
                 + " to " + endpointRelationDefine.getDest() + " in " + destService.getName();
+        } else if (DefaultScopeDefine.inBlockCatalog(scope)) {
+            return "";
         } else if (scope == DefaultScopeDefine.ALL) {
             return "";
         } else {

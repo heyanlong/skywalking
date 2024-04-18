@@ -172,6 +172,16 @@ public class EventHookCallback implements AlarmCallback {
                 builder.setLayer(getLayer(srcEndpointServiceIdDef.isReal() ? sourceEndpointIDDef.getServiceId() : destEndpointIDDef.getServiceId()));
                 events.add(builder.build());
                 break;
+            case DefaultScopeDefine.BLOCK:
+                IDManager.BlockID.BlockIDDefinition blockIDDef = IDManager.BlockID.analysisId(msg.getId0());
+                builder.setSource(
+                        Source.newBuilder()
+                                .setService(blockIDDef.getServiceName())
+                                .setServiceInstance(blockIDDef.getServiceInstanceName())
+                                .build()
+                );
+                events.add(builder.build());
+                break;
         }
         return events;
     }

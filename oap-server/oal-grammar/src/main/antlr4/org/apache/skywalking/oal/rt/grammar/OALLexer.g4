@@ -62,6 +62,8 @@ SRC_BROWSER_APP_TRAFFIC: 'BrowserAppTraffic';
 SRC_BROWSER_APP_PAGE_TRAFFIC: 'BrowserAppPageTraffic';
 SRC_BROWSER_APP_SINGLE_VERSION_TRAFFIC: 'BrowserAppSingleVersionTraffic';
 
+SRC_BLOCK: 'Block';
+
 // Constructors symbols
 
 DOT:                                 '.';
